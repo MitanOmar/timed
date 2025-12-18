@@ -79,7 +79,7 @@ class Command(BaseCommand):
         start = end - relativedelta(months=months, days=-1)
 
         reports = self._get_unverified_reports(start, end)
-        self._notify_reviewers(start, end, reports, message, cc)
+        self._notify_reviewers(start, end, reports, message, cc, offset)
 
     def _get_unverified_reports(self, start, end):
         """Get unverified reports.
@@ -89,7 +89,7 @@ class Command(BaseCommand):
         """
         return Report.objects.filter(date__range=[start, end], verified_by__isnull=True)
 
-    def _notify_reviewers(self, start, end, reports, optional_message, cc):
+    def _notify_reviewers(self, start, end, reports, optional_message, cc, offset):
         """Notify reviewers on their unverified reports.
 
         Only the reviewers lowest in the hierarchy should be notified.
@@ -164,12 +164,21 @@ class Command(BaseCommand):
                     }
                 )
 
+                copy_to = []
+                if offset > 6:
+                    supervisors = reviewer.supervisors.all()
+                    if len(supervisor) > 1:
+                        for supervisor in supervisors:
+                            copy_to.append(supervisor.email)
+                if offset > 16:
+                    copy_to.append(cc)
+
                 message = EmailMessage(
                     subject=subject,
                     body=body,
                     from_email=from_email,
                     to=[reviewer.email],
-                    cc=cc,
+                    cc=copy_to,
                     connection=connection,
                     headers=settings.EMAIL_EXTRA_HEADERS,
                 )
