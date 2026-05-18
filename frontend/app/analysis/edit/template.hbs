@@ -249,6 +249,7 @@
                     </f.input>
 
                   </Card::Block>
+                  <SplitReportCollapse @afterSave={{this.cancel}} @disabled={{not this.canSplitReport}} @report-id={{this.id}} />
                   <Card::Footer class="flex justify-between">
                     <div class="flex gap-2">
                       <button

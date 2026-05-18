@@ -1,0 +1,77 @@
+<Card::Block class="border-t p-0">
+  <button
+    type="button"
+    class="flex w-full items-center justify-between px-4 py-3 text-left font-semibold
+      {{if @disabled "cursor-not-allowed opacity-50"}}"
+    disabled={{@disabled}}
+    title={{if @disabled "Only if there is one report selected, and the report is not verified"}}
+    {{on "click" this.toggle}}
+  >
+    Split Report
+    <FaIcon @icon={{if this.isExpanded "chevron-up" "chevron-down"}} />
+  </button>
+
+  {{#if this.isExpanded}}
+    <div class="grid gap-2 border-t px-4 pb-4 pt-3">
+
+      <p class="text-sm font-semibold text-muted-foreground">New report</p>
+      <TaskSelection
+        @on-set-task={{this.onSetNewTask}}
+        as |t|
+      >
+        <t.customer @dropdownClass="z-[60]" />
+        <t.project @dropdownClass="z-[60]" />
+        <t.task @dropdownClass="z-[60]" />
+      </TaskSelection>
+      <input
+        value={{this.newComment}}
+        type="text"
+        {{on "change" (pick "target.value" (fn (mut this.newComment)))}}
+        class="ember-text-field form-control rounded"
+        placeholder="Comment"
+        aria-label="Comment for new report"
+      />
+      <DurationpickerDay
+        @value={{this.newDuration}}
+        @onChange={{this.onNewDurationChange}}
+        @title="Duration for new report"
+      />
+
+      <hr class="my-1" />
+
+      <p class="text-sm font-semibold text-muted-foreground">Original report</p>
+      <input
+        value={{this.oldComment}}
+        type="text"
+        {{on "change" (pick "target.value" (fn (mut this.oldComment)))}}
+        class="ember-text-field form-control rounded"
+        placeholder="Comment"
+        aria-label="Comment for original report"
+      />
+      <DurationpickerDay
+        @value={{this.remainingOldDuration}}
+        @onChange={{this.onRemainingDurationChange}}
+        @title="Remaining duration"
+      />
+
+      <div class="flex justify-end gap-2 pt-1">
+        <button
+          class="btn btn-default"
+          type="button"
+          {{on "click" this.toggle}}
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          {{on "click" (perform this.splitReport)}}
+          disabled={{or (not this.isValidSplit) this.splitReport.isRunning}}
+        >
+          Split
+        </button>
+      </div>
+
+    </div>
+  {{/if}}
+</Card::Block>
