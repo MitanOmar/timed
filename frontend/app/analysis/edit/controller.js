@@ -154,6 +154,13 @@ export default class AnalysisEditController extends Controller {
     return this.isReviewer || this.isSuperuser;
   }
 
+  get canSplitReport() {
+    return (
+      this.id.length === 1 &&
+      !this.intersection.lastSuccessful.value.model.verified
+    );
+  }
+
   get canBill() {
     return this.isAccountant || this.isSuperuser;
   }

@@ -266,6 +266,7 @@
                           (queue t.reset (fn this.resetChangeset f.model))
                         }}
                       >Reset</button>
+                      <SplitReportModal @afterSave={{this.cancel}} @disabled={{not this.canSplitReport}} @report-id={{this.id}} />
                     </div>
                     <f.submit />
                   </Card::Footer>

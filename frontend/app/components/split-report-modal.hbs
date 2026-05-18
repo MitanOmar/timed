@@ -1,0 +1,84 @@
+<button
+  type="button"
+  class="btn btn-success"
+  {{on "click" this.showModal}}
+  disabled={{@disabled}}
+  title={{if @disabled "Only if there is one report selected, and the report is not verified"}}
+  ...attributes
+>
+  Split Report
+</button>
+{{#if this.isModalVisible}}
+  <Modal
+    @visible={{this.isModalVisible}}
+    @onClose={{this.closeModal}}
+    class="md:w-auto"
+    as |modal|
+  >
+    <div class="sm:min-w-[32rem]">
+      <modal.header>
+        <h3>Split Report</h3>
+      </modal.header>
+      <modal.body class="grid gap-2">
+
+        <p class="text-sm font-semibold text-muted-foreground">New report</p>
+        <TaskSelection
+          @on-set-task={{this.onSetNewTask}}
+          as |t|
+        >
+          <t.customer @dropdownClass="z-[60]" />
+          <t.project @dropdownClass="z-[60]" />
+          <t.task @dropdownClass="z-[60]" />
+        </TaskSelection>
+        <input
+          value={{this.newComment}}
+          type="text"
+          {{on "change" (pick "target.value" (fn (mut this.newComment)))}}
+          class="ember-text-field form-control rounded"
+          placeholder="Comment"
+          aria-label="Comment for new report"
+        />
+        <DurationpickerDay
+          @value={{this.newDuration}}
+          @onChange={{this.onNewDurationChange}}
+          @title="Duration for new report"
+        />
+
+        <hr class="my-1" />
+
+        <p class="text-sm font-semibold text-muted-foreground">Original report</p>
+        <input
+          value={{this.oldComment}}
+          type="text"
+          {{on "change" (pick "target.value" (fn (mut this.oldComment)))}}
+          class="ember-text-field form-control rounded"
+          placeholder="Comment"
+          aria-label="Comment for original report"
+        />
+        <DurationpickerDay
+          @value={{this.remainingOldDuration}}
+          @onChange={{this.onRemainingDurationChange}}
+          @title="Remaining duration"
+        />
+
+      </modal.body>
+      <modal.footer class="flex justify-end gap-2">
+        <button
+          class="btn btn-default"
+          type="button"
+          {{on "click" this.closeModal}}
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          {{on "click" (perform this.splitReport)}}
+          disabled={{or (not this.isValidSplit) this.splitReport.isRunning}}
+        >
+          Split
+        </button>
+      </modal.footer>
+    </div>
+  </Modal>
+{{/if}}
