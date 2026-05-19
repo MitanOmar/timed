@@ -51,16 +51,16 @@ export default class SplitReportModal extends Component {
   }
 
   @action
-  onNewDurationChange(val) {
+  onNewDurationChange(value) {
     const totalMs = this.oldDuration.asMilliseconds();
-    const ms = Math.min(val?.asMilliseconds() ?? 0, totalMs);
+    const ms = Math.min(value?.asMilliseconds() ?? 0, totalMs);
     this.newDuration = moment.duration(Math.max(ms, 0));
   }
 
   @action
-  onRemainingDurationChange(val) {
+  onRemainingDurationChange(value) {
     const totalMs = this.oldDuration.asMilliseconds();
-    const remainingMs = Math.min(val?.asMilliseconds() ?? 0, totalMs);
+    const remainingMs = Math.min(value?.asMilliseconds() ?? 0, totalMs);
     this.newDuration = moment.duration(Math.max(totalMs - remainingMs, 0));
   }
 
