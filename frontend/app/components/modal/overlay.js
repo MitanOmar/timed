@@ -11,7 +11,7 @@ export default class ModalOverlay extends Component {
 
   @action
   handleClick(e) {
-    if (e.target.id === this.id) {
+    if (e.target.id === this.id && this.args.closeOnBackdropClick !== false) {
       this.args.onClose();
     }
   }

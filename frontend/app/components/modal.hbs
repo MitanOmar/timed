@@ -3,6 +3,7 @@
     <Modal::Overlay
       @visible={{@visible}}
       @onClose={{optional @onClose}}
+      @closeOnBackdropClick={{@closeOnBackdropClick}}
       {{focus-trap
         additionalElements=(array this.target this.dropdownDestination)
       }}
