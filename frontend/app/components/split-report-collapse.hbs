@@ -8,7 +8,7 @@
     {{on "click" this.toggle}}
   >
     Split Report
-    <FaIcon @icon={{if this.isExpanded "chevron-up" "chevron-down"}} />
+    <FaIcon @icon={{if this.isExpanded "angle-up" "angle-down"}}  @prefix="fa" />
   </button>
 
   {{#if this.isExpanded}}

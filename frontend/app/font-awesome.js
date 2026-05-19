@@ -49,6 +49,8 @@ import {
   faQuestion,
   faMagic,
   faCircleQuestion,
+  faAngleUp,
+  faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -100,4 +102,6 @@ library.add(
   faQuestion,
   faMagic,
   faCircleQuestion,
+  faAngleDown,
+  faAngleUp,
 );
