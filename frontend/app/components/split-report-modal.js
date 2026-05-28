@@ -14,6 +14,7 @@ export default class SplitReportModal extends Component {
   @tracked newComment = "";
   @tracked newDuration = moment.duration();
 
+  @tracked oldTask = null;
   @tracked oldComment = "";
   @tracked oldDuration = moment.duration();
 
@@ -27,8 +28,8 @@ export default class SplitReportModal extends Component {
 
   @action
   async showModal() {
-    this.isModalVisible = true;
     const report = await this.fetchReport.perform();
+    this.oldTask = report.task ?? null;
     this.oldComment = report.comment ?? "";
     this.oldDuration = report.duration
       ? moment.duration(report.duration)
@@ -36,6 +37,12 @@ export default class SplitReportModal extends Component {
     this.newDuration = moment.duration();
     this.newComment = "";
     this.newTask = null;
+    this.isModalVisible = true;
+  }
+
+  @action
+  onSetOldTask(task) {
+    this.oldTask = task;
   }
 
   @action
@@ -89,6 +96,7 @@ export default class SplitReportModal extends Component {
     try {
       const report = this.report;
 
+      report.task = this.oldTask;
       report.comment = this.oldComment;
       report.duration = this.remainingOldDuration;
       await report.save();

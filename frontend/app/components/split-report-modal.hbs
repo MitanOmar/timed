@@ -16,54 +16,67 @@
     class="md:w-auto"
     as |modal|
   >
-    <div class="sm:min-w-[32rem]">
+    <div class="sm:min-w-[64rem]">
       <modal.header>
         <h3>Split Report</h3>
       </modal.header>
-      <modal.body class="grid gap-2">
+      <modal.body>
+        <div class="grid grid-cols-2 gap-6">
 
-        <p class="text-sm font-semibold text-muted-foreground">New report</p>
-        <TaskSelection
-          @on-set-task={{this.onSetNewTask}}
-          as |t|
-        >
-          <t.customer @dropdownClass="z-[60]" />
-          <t.project @dropdownClass="z-[60]" />
-          <t.task @dropdownClass="z-[60]" />
-        </TaskSelection>
-        <input
-          value={{this.newComment}}
-          type="text"
-          {{on "change" (pick "target.value" (fn (mut this.newComment)))}}
-          class="ember-text-field form-control rounded"
-          placeholder="Comment"
-          aria-label="Comment for new report"
-        />
-        <DurationpickerDay
-          @value={{this.newDuration}}
-          @onChange={{this.onNewDurationChange}}
-          @title="Duration for new report"
-        />
+          <div class="flex flex-col gap-2">
+            <p class="text-sm font-semibold text-muted-foreground">Original report</p>
+            <TaskSelection
+              @on-set-task={{this.onSetOldTask}}
+              @task={{this.oldTask}}
+              as |t|
+            >
+              <t.customer @dropdownClass="z-[60]" />
+              <t.project @dropdownClass="z-[60]" />
+              <t.task @dropdownClass="z-[60]" />
+            </TaskSelection>
+            <input
+              value={{this.oldComment}}
+              type="text"
+              {{on "change" (pick "target.value" (fn (mut this.oldComment)))}}
+              class="ember-text-field form-control rounded"
+              placeholder="Comment"
+              aria-label="Comment for original report"
+            />
+            <DurationpickerDay
+              @value={{this.remainingOldDuration}}
+              @onChange={{this.onRemainingDurationChange}}
+              @title="Remaining duration"
+            />
+          </div>
 
-        <hr class="my-1" />
+          <div class="flex flex-col gap-2">
+            <p class="text-sm font-semibold text-muted-foreground">Second Report</p>
+            <TaskSelection
+              @on-set-task={{this.onSetNewTask}}
+              as |t|
+            >
+              <t.customer @dropdownClass="z-[60]" />
+              <t.project @dropdownClass="z-[60]" />
+              <t.task @dropdownClass="z-[60]" />
+            </TaskSelection>
+            <input
+              value={{this.newComment}}
+              type="text"
+              {{on "change" (pick "target.value" (fn (mut this.newComment)))}}
+              class="ember-text-field form-control rounded"
+              placeholder="Comment"
+              aria-label="Comment for new report"
+            />
+            <DurationpickerDay
+              @value={{this.newDuration}}
+              @onChange={{this.onNewDurationChange}}
+              @title="Duration for new report"
+            />
+          </div>
 
-        <p class="text-sm font-semibold text-muted-foreground">Original report</p>
-        <input
-          value={{this.oldComment}}
-          type="text"
-          {{on "change" (pick "target.value" (fn (mut this.oldComment)))}}
-          class="ember-text-field form-control rounded"
-          placeholder="Comment"
-          aria-label="Comment for original report"
-        />
-        <DurationpickerDay
-          @value={{this.remainingOldDuration}}
-          @onChange={{this.onRemainingDurationChange}}
-          @title="Remaining duration"
-        />
-
+        </div>
       </modal.body>
-      <modal.footer class="flex justify-end gap-2">
+      <modal.footer class="flex gap-2">
         <button
           class="btn btn-default"
           type="button"
@@ -72,7 +85,7 @@
           Cancel
         </button>
         <button
-          class="btn btn-primary"
+          class="btn btn-primary ms-auto"
           type="button"
           {{on "click" (perform this.splitReport)}}
           disabled={{or (not this.isValidSplit) this.splitReport.isRunning}}
