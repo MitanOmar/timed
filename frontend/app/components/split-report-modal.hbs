@@ -3,7 +3,10 @@
   class="btn btn-success"
   {{on "click" this.showModal}}
   disabled={{@disabled}}
-  title={{if @disabled "Only if there is one report selected, and the report is not verified"}}
+  title={{if
+    @disabled
+    "Only if there is one report selected, and the report is not verified"
+  }}
   ...attributes
 >
   Split Report
@@ -24,7 +27,8 @@
         <div class="grid grid-cols-2 gap-6">
 
           <div class="flex flex-col gap-2">
-            <p class="text-sm font-semibold text-muted-foreground">Original report</p>
+            <p class="text-muted-foreground text-sm font-semibold">Original
+              report</p>
             <TaskSelection
               @on-set-task={{this.onSetOldTask}}
               @task={{this.oldTask}}
@@ -50,11 +54,8 @@
           </div>
 
           <div class="flex flex-col gap-2">
-            <p class="text-sm font-semibold text-muted-foreground">Second Report</p>
-            <TaskSelection
-              @on-set-task={{this.onSetNewTask}}
-              as |t|
-            >
+            <p class="text-muted-foreground text-sm font-semibold">Second Report</p>
+            <TaskSelection @on-set-task={{this.onSetNewTask}} as |t|>
               <t.customer @dropdownClass="z-[60]" />
               <t.project @dropdownClass="z-[60]" />
               <t.task @dropdownClass="z-[60]" />
